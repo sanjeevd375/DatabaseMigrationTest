@@ -1,3 +1,3 @@
 USE master ;  
 GO  
-CREATE DATABASE Test1
+CREATE DATABASE Test2
