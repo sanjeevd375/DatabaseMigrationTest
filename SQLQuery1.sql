@@ -1,4 +1,4 @@
-USE Test;  
+USE Development;  
 
 CREATE TABLE S3Data (
 id [int] IDENTITY(1,1) NOT NULL,
