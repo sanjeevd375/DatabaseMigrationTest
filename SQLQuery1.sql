@@ -14,6 +14,11 @@ id [int] IDENTITY(1,1) NOT NULL,
 is_linc nvarchar(50) NOT NULL
 );
 
+INSERT INTO [dbo].[S31]
+           (is_linc)
+     VALUES
+           ('yes')
+
 INSERT INTO [dbo].[S3Data1]
            ([file_id]
            ,[name])
