@@ -62,16 +62,16 @@ node {
         powershell(label: 'Deploy to acceptance', script: """
             \$ErrorActionPreference = "Stop"
  
-            \$releaseArtifact = Import-DatabaseReleaseArtifact -Path ${RELEASE_ARTIFACT_PATH}
+            \$releaseArtifact = Import-DatabaseReleaseArtifact -Path "${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}"
             \$acceptanceDatabaseConnection = New-DatabaseConnection -ServerInstance ${ACCEPTANCE_INSTANCE} -Database ${ACCEPTANCE_DATABASE} -Username $username -Password $password
             Use-DatabaseReleaseArtifact -InputObject \$releaseArtifact -DeployTo \$acceptanceDatabaseConnection
         """)
  
-        //archiveArtifacts label: 'Archive release artifact', artifacts: "${RELEASE_ARTIFACT_PATH}\\**"
-        archiveArtifacts allowEmptyArchive: true, artifacts:"${RELEASE_ARTIFACT_PATH}\\TargetedDeploymentScript.sql", fingerprint: true
-        archiveArtifacts allowEmptyArchive: true, artifacts:"${RELEASE_ARTIFACT_PATH}\\DriftRevertScript.sql", fingerprint: true
-        archiveArtifacts allowEmptyArchive: true, artifacts:"${RELEASE_ARTIFACT_PATH}\\Reports\\Changes.html", fingerprint: true
-        archiveArtifacts allowEmptyArchive: true, artifacts:"${RELEASE_ARTIFACT_PATH}\\Reports\\Drift.html", fingerprint: true
+        //archiveArtifacts label: 'Archive release artifact', artifacts: "${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}\\**"
+        archiveArtifacts allowEmptyArchive: true, artifacts:"${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}\\TargetedDeploymentScript.sql", fingerprint: true
+        archiveArtifacts allowEmptyArchive: true, artifacts:"${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}\\DriftRevertScript.sql", fingerprint: true
+        archiveArtifacts allowEmptyArchive: true, artifacts:"${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}\\Reports\\Changes.html", fingerprint: true
+        archiveArtifacts allowEmptyArchive: true, artifacts:"${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}\\Reports\\Drift.html", fingerprint: true
  
     }
  
@@ -106,7 +106,7 @@ node {
         powershell(label: 'Deploy to production', script: """
             \$ErrorActionPreference = "Stop"
  
-            \$releaseArtifact = Import-DatabaseReleaseArtifact -Path ${RELEASE_ARTIFACT_PATH}
+            \$releaseArtifact = Import-DatabaseReleaseArtifact -Path "${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}"
             \$productionDatabaseConnection = New-DatabaseConnection -ServerInstance ${PRODUCTION_INSTANCE} -Database ${PRODUCTION_DATABASE} -Username $username -Password $password
             Use-DatabaseReleaseArtifact -InputObject \$releaseArtifact -DeployTo \$productionDatabaseConnection
         """)
