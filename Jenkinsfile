@@ -56,13 +56,13 @@ node {
             \$buildArtifact = Import-DatabaseBuildArtifact -Path ${BUILD_ARTIFACT_FILE}
             \$acceptanceDatabaseConnection = New-DatabaseConnection -ServerInstance ${ACCEPTANCE_INSTANCE} -Database ${ACCEPTANCE_DATABASE} -Username $username -Password $password
             \$releaseArtifact = New-DatabaseReleaseArtifact -Source \$buildArtifact -Target \$acceptanceDatabaseConnection
-            Export-DatabaseReleaseArtifact -InputObject \$releaseArtifact -Path ${RELEASE_ARTIFACT_PATH}
+            Export-DatabaseReleaseArtifact -InputObject \$releaseArtifact -Path "${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}"
         """)
  
         powershell(label: 'Deploy to acceptance', script: """
             \$ErrorActionPreference = "Stop"
  
-            \$releaseArtifact = Import-DatabaseReleaseArtifact -Path ${RELEASE_ARTIFACT_PATH}
+            \$releaseArtifact = Import-DatabaseReleaseArtifact -Path "${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}"
             \$acceptanceDatabaseConnection = New-DatabaseConnection -ServerInstance ${ACCEPTANCE_INSTANCE} -Database ${ACCEPTANCE_DATABASE} -Username $username -Password $password
             Use-DatabaseReleaseArtifact -InputObject \$releaseArtifact -DeployTo \$acceptanceDatabaseConnection
         """)
@@ -100,7 +100,7 @@ node {
         powershell(label: 'Deploy to production', script: """
             \$ErrorActionPreference = "Stop"
  
-            \$releaseArtifact = Import-DatabaseReleaseArtifact -Path ${RELEASE_ARTIFACT_PATH}
+            \$releaseArtifact = Import-DatabaseReleaseArtifact -Path "${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}"
             \$productionDatabaseConnection = New-DatabaseConnection -ServerInstance ${PRODUCTION_INSTANCE} -Database ${PRODUCTION_DATABASE} -Username $username -Password $password
             Use-DatabaseReleaseArtifact -InputObject \$releaseArtifact -DeployTo \$productionDatabaseConnection
         """)
