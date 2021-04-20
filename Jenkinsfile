@@ -25,7 +25,7 @@ node {
     def useremail = 'sanjeevdas.bokaro@gmail.com'
  
     stage ('Build') {
-        
+ 	checkout scm       
  
         powershell(label: 'Database build', script: """
             \$ErrorActionPreference = "Stop"
@@ -56,7 +56,7 @@ node {
             \$buildArtifact = Import-DatabaseBuildArtifact -Path ${BUILD_ARTIFACT_FILE}
             \$acceptanceDatabaseConnection = New-DatabaseConnection -ServerInstance ${ACCEPTANCE_INSTANCE} -Database ${ACCEPTANCE_DATABASE} -Username $username -Password $password
             \$releaseArtifact = New-DatabaseReleaseArtifact -Source \$buildArtifact -Target \$acceptanceDatabaseConnection
-            Export-DatabaseReleaseArtifact -InputObject \$releaseArtifact -Path ${RELEASE_ARTIFACT_PATH}
+            Export-DatabaseReleaseArtifact -InputObject \$releaseArtifact -Path "${RELEASE_ARTIFACT_PATH}${env.BUILD_NUMBER}"
         """)
  
         powershell(label: 'Deploy to acceptance', script: """
