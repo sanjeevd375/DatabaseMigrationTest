@@ -24,3 +24,6 @@ INSERT INTO [dbo].[S3Data1]
            ,[name])
      VALUES
            ('ID1','Sanjeev')
+
+ALTER TABLE [dbo].[S3Data1]
+ADD email nvarchar(50);
