@@ -8,3 +8,9 @@ CREATE TABLE dbo.S3 (
 id [int] IDENTITY(1,1) NOT NULL,
 is_linc nvarchar(50) NOT NULL
 );
+
+INSERT INTO [dbo].[S3Data1]
+           ([file_id]
+           ,[name])
+     VALUES
+           ('ID1','Test')
